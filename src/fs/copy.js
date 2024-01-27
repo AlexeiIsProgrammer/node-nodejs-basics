@@ -20,7 +20,7 @@ async function copyDirectory(source, destination) {
             }
         }
     } catch (error) {
-        console.error('Error copying directory:', error.message);
+        console.error('Error:', error.message);
     }
 }
 
@@ -35,7 +35,6 @@ const copy = async () => {
             try {
                 const copyStats = await fs.stat(copyDirectoryPath)
 
-                console.log('tut');
                 if (copyStats.isDirectory()) {
                     throw new Error('FS operation failed');
                 }
