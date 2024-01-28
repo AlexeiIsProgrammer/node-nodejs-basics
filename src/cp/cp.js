@@ -1,6 +1,14 @@
-const spawnChildProcess = async (args) => {
-    // Write your code here
-};
+import { spawn } from 'child_process';
+import __relative from '../modules/__relative.js';
 
-// Put your arguments in function call to test this functionality
-spawnChildProcess( /* [someArgument1, someArgument2, ...] */);
+function spawnChildProcess(args) {
+    const childProcess = spawn('node', [__relative(import.meta.url, 'files/script.js'), ...args], {
+        stdio: ['pipe', 'pipe', 'pipe', 'ipc'],
+    });
+
+    process.stdin.pipe(childProcess.stdin);
+
+    childProcess.stdout.pipe(process.stdout);
+}
+
+spawnChildProcess(['1one', '2two', '3three']);
