@@ -18,7 +18,7 @@ const performCalculations = async () => {
                     resolve(data)
                 })
                 worker.on('error', (err) => {
-                    resolve(data);
+                    resolve({ status: err.message, data: null });
                 })
             })
         )

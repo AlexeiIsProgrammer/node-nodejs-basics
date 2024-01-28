@@ -8,6 +8,6 @@ parentPort.on('message', (message) => {
     if (Math.random() < 0.9) { // For error handling
         parentPort.postMessage({ status: 'resolved', data: modifiedMessage });
     } else {
-        parentPort.postMessage({ status: 'error', data: null });
+        throw new Error('error')
     }
 });
