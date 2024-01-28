@@ -1,8 +1,13 @@
-// n should be received from main thread
+import { parentPort } from 'worker_threads';
+
 const nthFibonacci = (n) => n < 2 ? n : nthFibonacci(n - 1) + nthFibonacci(n - 2);
 
-const sendResult = () => {
-    // This function sends result of nthFibonacci computations to main thread
-};
+parentPort.on('message', (message) => {
+    const modifiedMessage = nthFibonacci(message)
 
-sendResult();
+    if (Math.random() < 0.9) { // For error handling
+        parentPort.postMessage({ status: 'resolved', data: modifiedMessage });
+    } else {
+        parentPort.postMessage({ status: 'error', data: null });
+    }
+});
