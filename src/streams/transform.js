@@ -1,24 +1,26 @@
 
 import __relative from '../modules/__relative.js';
-import { promises as fsPromises } from 'fs';
+import { Transform } from 'stream';
 
 const transform = async () => {
-    console.log('Write smth here for transforming: \n');
-    let input = '';
-    process.stdin.on('data', (data) => {
-        input += data
-    })
+    console.log('Write smth here for transforming:');
 
-    const exitHandle = () => {
+    const reversed = new Transform({
+        transform(chunk, _, callback) {
+            const reversedData = chunk.toString().split('').reverse().join('');
+            this.push(reversedData);
+            callback();
+        }
+    });
+
+    reversed.on('data', (data) => {
         console.log('Your reversed input is:');
-        process.stdout.write(input.split('').reverse().join(''))
-        process.exit(0);
-    }
+        process.stdout.write(data.toString());
 
-    process.stdin.on('end', exitHandle);
+        console.log('\nWrite smth here for transforming:');
+    });
 
-    process.on('SIGINT', exitHandle);
-
+    process.stdin.pipe(reversed);
 };
 
 await transform();
